@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <title>Heroes and Species</title>
+	<!--<meta charset="UTF-8">
+    <meta names="viewport" contents="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" type="text/css" href="CommonStyle.css">
+	<script src="CommonScript.js"></script>
+  </head>
+  <body class="columnAlign">
+    <div class="mainContent columnAlign">
+		<video autoplay muted loop id="videoBackground">
+		  <source src="backgroundVideo1.mp4" type="video/mp4">
+		</video>
+		<section id="headerContainer" class="headerContainer rowAlign">
+		  <div class="titleContent centerAlign">Heroes and Species</div>
+		</section>
+		<section id="contentContainer" class="contentContainer columnAlign centerAlign">
+		</section>
+		<section id="footerContainer" class="footerContainer centerAlign">
+		  <div id="footerContent">Óbudai Egyetem 2018-<span id="year"></span></div>
+		  <script>getYear();</script>
+		</section>
+	</div>
+    <script src="CommonScript.js"></script>
+  </body>
+</html>
+<!-- Template for the main page. -->
+<template id ="mainPage">
+  <div class="rowAlign contentMain">
+    <input type="button" class="mainButton" value="Heroes" onclick="loadTemplate('#heroPage')" />
+	<input type="button" class="mainButton" value="Species" onclick="loadTemplate('#speciesPage')" />
+  </div>
+</template>
+<!-- Template for handling heroes. -->
+<template id ="heroPage">
+  <div class="HeroesDiv columnAlign">
+    <div class="tableOrder">
+	  <input type="text" id="tableOrderField" value="id" />
+	  <input type="text" id="tableOrderDirection" value="ASC" />
+	</div>
+    <table class="HeroesTable columnAlign centerAlign">
+      <thead class="HeroesTableHead centerAlign">
+        <tr>
+          <th class="column1" onclick="getHeroesByColumn('id')">
+		    <div class="rowAlign">
+			  <div>Id</div>
+			  <div id="idArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="idArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column2" onclick="getHeroesByColumn('name')">
+		    <div class="rowAlign">
+			  <div>Name</div>
+			  <div id="nameArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="nameArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column3" onclick="getHeroesByColumn('description')">
+		    <div class="rowAlign">
+			  <div>Description</div>
+			  <div id="descriptionArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="descriptionArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column4">Info</th>
+		  <th class="column5">Modify</th>
+		  <th class="column6">Delete</th>
+        </tr>
+      </thead>
+      <tbody id="HeroesTableBody"></tbody>
+      <script>getHeroes(0, 0, "id", "ASC");</script>
+    </table>
+	<div class="refreshDiv centerAlign">
+	  <div class="smallMargin">Start Index:</div>
+	  <input type="number" id="tableStartIndex" class="smallMargin" min="0" value="0" />
+	  <div class="smallMargin">Item Count:</div>
+	  <input type="number" id="tableItemCount" class="smallMargin" min='0' value="0" />
+	  <input type="button" class="refreshButton smallMargin" onclick="getHeroesByRefresh()" value="Refresh" />
+	</div>
+	<div class="handleHeroDiv centerAlign columnAlign">
+	  <div class="handleHeroDiv2">
+	    <div class="HeroesLabel centerAlign">Hero</div>
+        <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Id:</div>
+		  <input type="text" class="columnSize2" id="heroId"/>
+		</div>
+	    <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Name:</div>
+		  <input type="text" class="columnSize2" id="heroName"/>
+		</div>
+	    <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Description:</div>
+		  <input type="text" class="columnSize2" id="heroDescription"/>
+		</div>
+	    <div class="centerAlign">
+	      <input type="button" class="operationButton" value="Add" onclick="addHero()" />
+	      <input type="button" id="modifyHeroButton" class="operationButton" value="Modify" disabled="true" onclick="modifyHeroById();setButtonDisabled('modifyHeroButton');" />
+        </div>
+      </div>
+	</div>
+	<div class="buttonsDiv columnAlign">
+	  <input type="button" class="backButton" value="Back" onclick="loadTemplate('#mainPage')" />
+	</div>
+  </div>
+</template>
+<!-- Template for handling species. -->
+<template id ="speciesPage">
+  <div class="SpeciesDiv columnAlign">
+    <div class="tableOrder">
+	  <input type="text" id="tableOrderField" value="id" />
+	  <input type="text" id="tableOrderDirection" value="ASC" />
+	</div>
+    <table class="SpeciesTable columnAlign centerAlign">
+      <thead class="SpeciesTableHead centerAlign">
+        <tr>
+          <th class="column1" onclick="getSpeciesByColumn('id')">
+		    <div class="rowAlign">
+			  <div>Id</div>
+			  <div id="idArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="idArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column2" onclick="getSpeciesByColumn('name')">
+		    <div class="rowAlign">
+			  <div>Name</div>
+			  <div id="nameArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="nameArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column3" onclick="getSpeciesByColumn('description')">
+		    <div class="rowAlign">
+			  <div>Description</div>
+			  <div id="descriptionArrowUp" class="arrow-up tableOrder"></div>
+			  <div id="descriptionArrowDown" class="arrow-down tableOrder"></div>
+			</div>
+		  </th>
+		  <th class="column4">Info</th>
+		  <th class="column5">Modify</th>
+		  <th class="column6">Delete</th>
+        </tr>
+      </thead>
+      <tbody id="SpeciesTableBody"></tbody>
+      <script>getSpecies(0, 0, "id", "ASC");</script>
+    </table>
+	<div class="refreshDiv centerAlign">
+	  <div class="smallMargin">Start Index:</div>
+	  <input type="number" id="tableStartIndex" class="smallMargin" min="0" value="0" />
+	  <div class="smallMargin">Item Count:</div>
+	  <input type="number" id="tableItemCount" class="smallMargin" min='0' value="0" />
+	  <input type="button" class="refreshButton smallMargin" onclick="getSpeciesByRefresh()" value="Refresh" />
+	</div>
+	<div class="handleSpeciesDiv centerAlign columnAlign">
+	  <div class="handleSpeciesDiv2">
+	    <div class="SpeciesLabel centerAlign">Species</div>
+        <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Id:</div>
+		  <input type="text" class="columnSize2" id="speciesId"/>
+		</div>
+	    <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Name:</div>
+		  <input type="text" class="columnSize2" id="speciesName"/>
+		</div>
+	    <div class="rowAlign centerAlign">
+		  <div class="columnSize1">Description:</div>
+		  <input type="text" class="columnSize2" id="speciesDescription"/>
+		</div>
+	    <div class="centerAlign">
+	      <input type="button" class="operationButton" value="Add" onclick="addSpecies()" />
+	      <input type="button" id="modifySpeciesButton" class="operationButton" value="Modify" disabled="true" onclick="modifySpeciesById();setButtonDisabled('modifySpeciesButton');" />
+		</div>
+      </div>
+	</div>
+	<div class="buttonsDiv columnAlign">
+	  <input type="button" class="backButton" value="Back" onclick="loadTemplate('#mainPage')" />
+	</div>
+  </div>
+</template>
